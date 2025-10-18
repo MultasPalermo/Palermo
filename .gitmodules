@@ -1,0 +1,15 @@
+[submodule "Palermo-cart-docs"]
+	path = Palermo-cart-docs
+	url = https://github.com/MultasPalermo/Palermo-cart-docs.git
+[submodule "Palermo-cart-api"]
+	path = Palermo-cart-api
+	url = https://github.com/MultasPalermo/Palermo-cart-api.git
+[submodule "Palermo-cart-portal"]
+	path = Palermo-cart-portal
+	url = https://github.com/MultasPalermo/Palermo-cart-portal.git
+[submodule "Palermo-cart-app"]
+	path = Palermo-cart-app
+	url = https://github.com/MultasPalermo/Palermo-cart-app.git
+[submodule "Palermo-cart-db"]
+	path = Palermo-cart-db
+	url = https://github.com/MultasPalermo/Palermo-cart-db.git
