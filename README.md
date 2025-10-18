@@ -24,21 +24,27 @@ This workspace contains five independent repositories:
 - PostgreSQL 14+ (for Database)
 - Flutter SDK or React Native CLI (for Mobile)
 
-### Clone All Repositories
+### Clone Workspace with Submodules
+
+This workspace uses **Git Submodules**. To clone with all repositories:
 
 ```bash
-# Clone the entire workspace
-git clone <workspace-url>
-cd ProyectoPalermo
+# Clone the workspace repository with all submodules
+git clone --recursive https://github.com/MultasPalermo/Palermo-cart.git
+cd Palermo-cart
 
-# Each subdirectory is an independent git repository
-ls -la
-# Palermo-cart-docs/
-# Palermo-cart-api/
-# Palermo-cart-portal/
-# Palermo-cart-app/
-# Palermo-cart-db/
+# OR if already cloned without --recursive:
+git clone https://github.com/MultasPalermo/Palermo-cart.git
+cd Palermo-cart
+git submodule update --init --recursive
 ```
+
+Each subdirectory is a Git submodule pointing to its own repository:
+- `Palermo-cart-docs/` → https://github.com/MultasPalermo/Palermo-cart-docs
+- `Palermo-cart-api/` → https://github.com/MultasPalermo/Palermo-cart-api
+- `Palermo-cart-portal/` → https://github.com/MultasPalermo/Palermo-cart-portal
+- `Palermo-cart-app/` → https://github.com/MultasPalermo/Palermo-cart-app
+- `Palermo-cart-db/` → https://github.com/MultasPalermo/Palermo-cart-db
 
 ### Setup
 
