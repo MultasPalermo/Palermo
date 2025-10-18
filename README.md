@@ -1,6 +1,6 @@
-# Palermo Cart (Polyrepo Architecture)
+# Palermo  (Polyrepo Architecture)
 
-A shopping cart application built using a polyrepo architecture, with separate repositories for each module to enable independent development, deployment, and scaling.
+A shopping  application built using a polyrepo architecture, with separate repositories for each module to enable independent development, deployment, and scaling.
 
 ## Project Structure
 
@@ -8,11 +8,11 @@ This workspace contains five independent repositories:
 
 | Repository | Description | Technology |
 |------------|-------------|------------|
-| [Palermo-cart-docs](./Palermo-cart-docs) | Documentation, architecture diagrams, and ADRs | Markdown |
-| [Palermo-cart-api](./Palermo-cart-api) | Backend REST API and business logic | Golang |
-| [Palermo-cart-portal](./Palermo-cart-portal) | Web frontend for end-users | React/Vue/Angular |
-| [Palermo-cart-app](./Palermo-cart-app) | Mobile application for iOS and Android | Flutter/React Native |
-| [Palermo-cart-db](./Palermo-cart-db) | PostgreSQL database schema and migrations | PostgreSQL |
+| [Palermo--docs](./Palermo--docs) | Documentation, architecture diagrams, and ADRs | Markdown |
+| [Palermo--api](./Palermo--api) | Backend REST API and business logic | Golang |
+| [Palermo--portal](./Palermo--portal) | Web frontend for end-users | React/Vue/Angular |
+| [Palermo--app](./Palermo--app) | Mobile application for iOS and Android | Flutter/React Native |
+| [Palermo--db](./Palermo--db) | PostgreSQL database schema and migrations | PostgreSQL |
 
 ## Quick Start
 
@@ -30,33 +30,33 @@ This workspace uses **Git Submodules**. To clone with all repositories:
 
 ```bash
 # Clone the workspace repository with all submodules
-git clone --recursive https://github.com/MultasPalermo/Palermo-cart.git
-cd Palermo-cart
+git clone --recursive https://github.com/MultasPalermo/Palermo-.git
+cd Palermo-
 
 # OR if already cloned without --recursive:
-git clone https://github.com/MultasPalermo/Palermo-cart.git
-cd Palermo-cart
+git clone https://github.com/MultasPalermo/Palermo-.git
+cd Palermo-
 git submodule update --init --recursive
 ```
 
 Each subdirectory is a Git submodule pointing to its own repository:
-- `Palermo-cart-docs/` → https://github.com/MultasPalermo/Palermo-cart-docs
-- `Palermo-cart-api/` → https://github.com/MultasPalermo/Palermo-cart-api
-- `Palermo-cart-portal/` → https://github.com/MultasPalermo/Palermo-cart-portal
-- `Palermo-cart-app/` → https://github.com/MultasPalermo/Palermo-cart-app
-- `Palermo-cart-db/` → https://github.com/MultasPalermo/Palermo-cart-db
+- `Palermo--docs/` → https://github.com/MultasPalermo/Palermo-docs
+- `Palermo--api/` → https://github.com/MultasPalermo/Palermo-api
+- `Palermo--portal/` → https://github.com/MultasPalermo/Palermo-portal
+- `Palermo--app/` → https://github.com/MultasPalermo/Palermo-app
+- `Palermo--db/` → https://github.com/MultasPalermo/Palermo-db
 
 ### Setup
 
 Refer to each repository's README for detailed setup instructions:
 
-1. **Database**: [Palermo-cart-db/README.md](./Palermo-cart-db/README.md)
-2. **API**: [Palermo-cart-api/README.md](./Palermo-cart-api/README.md)
-3. **Portal**: [Palermo-cart-portal/README.md](./Palermo-cart-portal/README.md)
-4. **Mobile App**: [Palermo-cart-app/README.md](./Palermo-cart-app/README.md)
-5. **Documentation**: [Palermo-cart-docs/README.md](./Palermo-cart-docs/README.md)
+1. **Database**: [Palermo--db/README.md](./Palermo-db/README.md)
+2. **API**: [Palermo--api/README.md](./Palermo-api/README.md)
+3. **Portal**: [Palermo--portal/README.md](./Palermo-portal/README.md)
+4. **Mobile App**: [Palermo--app/README.md](./Palermo-app/README.md)
+5. **Documentation**: [Palermo--docs/README.md](./Palermo-docs/README.md)
 
-For a comprehensive getting started guide, see [Getting Started Guide](./Palermo-cart-docs/workflows/getting-started.md).
+For a comprehensive getting started guide, see [Getting Started Guide](./Palermo--docs/workflows/getting-started.md).
 
 ## Branching Strategy
 
@@ -150,7 +150,7 @@ Closes #123"
 - **Versioning**: Semantic Versioning (MAJOR.MINOR.PATCH)
 - **Tags**: All releases must be tagged (e.g., `v1.2.0`)
 
-See [Release Process](./Palermo-cart-docs/workflows/release-process.md) for detailed instructions.
+See [Release Process](./Palermo--docs/workflows/release-process.md) for detailed instructions.
 
 ## Important Rules
 
@@ -163,11 +163,11 @@ See [Release Process](./Palermo-cart-docs/workflows/release-process.md) for deta
 
 ## Documentation
 
-Comprehensive documentation is available in the [Palermo-cart-docs](./Palermo-cart-docs) repository:
+Comprehensive documentation is available in the [Palermo--docs](./Palermo--docs) repository:
 
-- [Getting Started Guide](./Palermo-cart-docs/workflows/getting-started.md)
-- [Branching Policy](./Palermo-cart-docs/workflows/branching-policy.md)
-- [Release Process](./Palermo-cart-docs/workflows/release-process.md)
+- [Getting Started Guide](./Palermo--docs/workflows/getting-started.md)
+- [Branching Policy](./Palermo--docs/workflows/branching-policy.md)
+- [Release Process](./Palermo--docs/workflows/release-process.md)
 - Architecture Diagrams (coming soon)
 - API Documentation (coming soon)
 
@@ -187,22 +187,22 @@ This project uses a **polyrepo architecture** (multiple repositories) as opposed
 
 ```bash
 # 1. Set up database
-cd Palermo-cart-db
-createdb palermo_cart_dev
-psql -d palermo_cart_dev -f migrations/001_initial_schema.sql
+cd Palermo--db
+createdb palermo__dev
+psql -d palermo__dev -f migrations/001_initial_schema.sql
 
 # 2. Start API
-cd ../Palermo-cart-api
+cd ../Palermo--api
 cp .env.example .env
 go run main.go
 
 # 3. Start Web Portal
-cd ../Palermo-cart-portal
+cd ../Palermo--portal
 npm install
 npm run dev
 
 # 4. Start Mobile App (optional)
-cd ../Palermo-cart-app
+cd ../Palermo--app
 flutter run
 # or
 npm run android
@@ -214,28 +214,28 @@ Each repository contains its own test suite:
 
 ```bash
 # API tests
-cd Palermo-cart-api && go test ./...
+cd Palermo--api && go test ./...
 
 # Portal tests
-cd Palermo-cart-portal && npm test
+cd Palermo--portal && npm test
 
 # Mobile app tests
-cd Palermo-cart-app && flutter test
+cd Palermo--app && flutter test
 ```
 
 ## Contributing
 
-1. Read the [Getting Started Guide](./Palermo-cart-docs/workflows/getting-started.md)
-2. Follow the [Branching Policy](./Palermo-cart-docs/workflows/branching-policy.md)
+1. Read the [Getting Started Guide](./Palermo--docs/workflows/getting-started.md)
+2. Follow the [Branching Policy](./Palermo--docs/workflows/branching-policy.md)
 3. Write tests for new features
 4. Update documentation
 5. Create Merge Request with detailed description
 
 ## Support
 
-- **Documentation**: [Palermo-cart-docs](./Palermo-cart-docs)
+- **Documentation**: [Palermo--docs](./Palermo--docs)
 - **Issues**: Use GitHub/GitLab Issues in respective repositories
-- **Team Channel**: #palermo-cart-dev on Slack
+- **Team Channel**: #palermo--dev on Slack
 
 ## License
 
