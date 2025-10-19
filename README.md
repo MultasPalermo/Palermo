@@ -6,23 +6,20 @@ Aplicación de compras construida con una arquitectura polyrepo, con repositorio
 
 Este workspace contiene cinco repositorios independientes:
 
-| Repositorio | Descripción | Tecnología |
-|-------------|-------------|------------|
-| [Palermo-docs](./Palermo-docs) | Documentación, diagramas de arquitectura y ADRs | Markdown |
-| [Palermo-api](./Palermo-api) | API REST de backend y lógica de negocio | Golang |
-| [Palermo-portal](./Palermo-portal) | Frontend web para usuarios finales | React/Vue/Angular |
-| [Palermo-app](./Palermo-app) | Aplicación móvil para iOS y Android | Flutter/React Native |
-| [Palermo-db](./Palermo-db) | Esquema de base de datos y migraciones | PostgreSQL |
+| Repositorio | Descripción |
+|-------------|-------------|
+| [Palermo-docs](./Palermo-docs) | Documentación, diagramas de arquitectura y ADRs |
+| [Palermo-api](./Palermo-api) | API REST de backend y lógica de negocio |
+| [Palermo-portal](./Palermo-portal) | Frontend web para usuarios finales |
+| [Palermo-app](./Palermo-app) | Aplicación móvil |
+| [Palermo-db](./Palermo-db) | Esquema de base de datos y migraciones |
 
 ## Inicio rápido
 
 ### Requisitos previos
 
 - Git 2.30+
-- Go 1.21+ (para la API)
-- Node.js 18+ (para Portal/App)
 - PostgreSQL 14+ (para la base de datos)
-- Flutter SDK o React Native CLI (para Mobile)
 
 ### Clonar el workspace con submódulos
 
