@@ -248,3 +248,207 @@ cd Palermo-app && flutter test
 - Dev Team: TBD
 - QA Lead: TBD
 - DevOps: TBD
+
+## Guía práctica: cómo trabajar con esta arquitectura y ramas
+
+Esta guía te lleva paso a paso por el flujo típico con polyrepo y submódulos, usando las ramas de entorno: `dev` → `qa` → `staging` → `main`.
+
+### Conceptos clave
+
+- Polyrepo: cada módulo (API, Portal, App, DB, Docs) está en su propio repositorio.
+- Submódulos: el repo raíz solo apunta a commits específicos de cada módulo. Siempre que cambies algo en un submódulo, debes actualizar el puntero del superproyecto (repo raíz).
+- Ramas de entorno: cada repo tiene `dev`, `qa`, `staging` y `main`. Trabajamos por HU (Historia de Usuario) creando ramas por entorno.
+
+### 0) Preparación inicial (una vez)
+
+```bash
+# Clonar con submódulos
+git clone --recursive https://github.com/MultasPalermo/Palermo.git
+cd Palermo
+
+# Si ya clonaste sin submódulos
+git submodule update --init --recursive
+```
+
+Recomendado tras cada cambio remoto:
+
+```bash
+# Actualiza todos los submódulos a sus commits configurados
+git submodule update --recursive
+```
+
+### 1) Desarrollo en `dev` (por submódulo afectado)
+
+Ejemplo con `Palermo-api` (repite para los módulos que necesites):
+
+```bash
+cd Palermo-api
+git fetch --all
+git switch dev
+git pull origin dev
+
+# Crea rama de HU en dev
+git switch -c HU-01-dev
+
+# Desarrolla
+# ... cambios de código ...
+git add .
+git commit -m "feat(api): HU-01 implementar X"
+
+# Publica y crea PR a dev
+git push -u origin HU-01-dev
+# Abre un Pull Request: HU-01-dev → dev (en el repo del submódulo)
+```
+
+Tras aprobar y mergear el PR en el submódulo a `dev`, actualiza el superproyecto para apuntar a ese commit:
+
+```bash
+cd ..  # vuelve al repo raíz
+git add Palermo-api
+git commit -m "chore(submodules): actualizar Palermo-api a dev (HU-01)"
+git push
+```
+
+Nota: si el repo raíz también usa ramas de entorno (recomendado), realiza el commit anterior sobre la rama `dev` del repo raíz.
+
+### 2) Promoción a `qa`
+
+Hay dos formas comunes. Para quienes comienzan, recomendamos la opción A (cherry-pick) porque trae solo los cambios de la HU.
+
+Opción A — Cherry-pick a una rama `HU-01-qa`:
+
+```bash
+cd Palermo-api
+git fetch --all
+git switch qa
+git pull origin qa
+
+# Crea la rama de HU para QA
+git switch -c HU-01-qa
+
+# Trae los commits de la HU desde dev
+git log --oneline origin/HU-01-dev  # identifica los SHAs de la HU
+git cherry-pick <sha-inicial>^..<sha-final>
+
+# Resuelve conflictos si aparecen, luego
+git push -u origin HU-01-qa
+# Crea PR: HU-01-qa → qa
+```
+
+Opción B — PR entre ramas de entorno (más simple, pero puede arrastrar cambios no deseados):
+
+```bash
+# En GitHub: abrir PR de dev → qa con el alcance de la HU
+# (Úsalo solo si dev no contiene otros cambios que no deban ir a qa)
+```
+
+Tras mergear en `qa`, actualiza el puntero del superproyecto:
+
+```bash
+cd ..
+git add Palermo-api
+git commit -m "chore(submodules): actualizar Palermo-api a qa (HU-01)"
+git push
+```
+
+### 3) Promoción a `staging`
+
+Repite el patrón de QA:
+
+```bash
+cd Palermo-api
+git fetch --all
+git switch staging
+git pull origin staging
+git switch -c HU-01-staging
+
+# Cherry-pick de los commits aprobados en qa
+git log --oneline origin/qa
+git cherry-pick <sha-inicial>^..<sha-final>
+
+git push -u origin HU-01-staging
+# PR: HU-01-staging → staging
+
+cd ..
+git add Palermo-api
+git commit -m "chore(submodules): actualizar Palermo-api a staging (HU-01)"
+git push
+```
+
+### 4) Preparar release a `main`
+
+Cuando el sprint está listo para producción:
+
+```bash
+cd Palermo-api
+git fetch --all
+git switch main
+git pull origin main
+
+# O crea/usa rama de release si aplica
+git switch -c release.1.2  # ejemplo
+
+# Cherry-pick desde staging (o merge si el repositorio lo permite)
+git log --oneline origin/staging
+git cherry-pick <sha-inicial>^..<sha-final>
+
+git push -u origin release.1.2
+# PR: release.1.2 → main
+
+cd ..
+git add Palermo-api
+git commit -m "chore(submodules): actualizar Palermo-api para release 1.2"
+git push
+```
+
+Tras el merge a `main`, etiqueta el release en el submódulo:
+
+```bash
+cd Palermo-api
+git switch main
+git pull
+git tag -a v1.2.0 -m "Release v1.2.0"
+git push origin v1.2.0
+```
+
+### Mantener submódulos sincronizados
+
+- Después de merges en submódulos, siempre realiza un commit en el repo raíz actualizando el puntero del submódulo.
+- Si el repo raíz maneja ramas por entorno, repite la actualización en la rama correspondiente (`dev`, `qa`, `staging`, `main`).
+- Para traer la última referencia del submódulo en una rama concreta:
+
+```bash
+cd Palermo-api
+git fetch
+git switch dev  # o qa/staging/main
+git pull
+cd ..
+git add Palermo-api
+git commit -m "chore(submodules): actualizar puntero de Palermo-api"
+git push
+```
+
+### Errores comunes y cómo evitarlos
+
+- Olvidar actualizar el repo raíz tras mergear en un submódulo → Solución: `git add <submodulo> && git commit && git push` en el repo raíz.
+- Crear PRs entre ramas de entorno que arrastran cambios no deseados → Prefiere cherry-pick por HU.
+- Conflictos de cherry-pick → Resuelve conflictos archivo por archivo, valida tests y continúa con `git cherry-pick --continue`.
+- Trabajar en la rama de entorno directamente (`dev`, `qa`, `staging`, `main`) → Siempre usa ramas `HU-*` y PRs.
+
+### Checklist rápida por HU
+
+1) Rama `HU-xx-dev` → PR a `dev` (submódulo)
+
+2) Actualiza repo raíz (puntero del submódulo)
+
+3) Rama `HU-xx-qa` (desde `qa`) + cherry-pick → PR a `qa`
+
+4) Actualiza repo raíz
+
+5) Rama `HU-xx-staging` (desde `staging`) + cherry-pick → PR a `staging`
+
+6) Actualiza repo raíz
+
+7) Rama de `release.X.Y` (o directo a `main` según política) → PR a `main` + tag
+
+8) Actualiza repo raíz (puntero final)
